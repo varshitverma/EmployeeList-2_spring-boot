@@ -57,8 +57,9 @@ public class EmployeeH2Service implements EmployeeRepository {
             new EmployeeRowMapper(), employeeId);
             return employee;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+
     }
 
     @Override
@@ -84,7 +85,6 @@ public class EmployeeH2Service implements EmployeeRepository {
 
     @Override
     public void deleteEmployee(int employeeId) {
-        db.update("delete from employeelist where employeeId = ?", employeeId);
-        
+        db.update("delete from employeelist where employeeId=?",employeeId);
     }
 }
