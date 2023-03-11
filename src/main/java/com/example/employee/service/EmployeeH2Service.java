@@ -34,8 +34,8 @@ public class EmployeeH2Service implements EmployeeRepository {
 
     @Override
     public ArrayList<Employee> getEmployees() {
-        List<Employee> employeeList = db.query("select * from employeelist", new EmployeeRowMapper());
-        ArrayList<Employee> employees = new ArrayList<>(employeeList);
+        Collection<Employee> employeeCollection = db.query("select * from employeelist", new EmployeeRowMapper());
+        ArrayList<Employee> employees = new ArrayList<>(employeeCollection);
         return employees;
     }
 
@@ -64,23 +64,18 @@ public class EmployeeH2Service implements EmployeeRepository {
 
     @Override
     public Employee updateEmployee(int employeeId, Employee employee) {
-        try {
-            if (employee.getEmployeeName() != null) {
-                db.update("update employeelist set employeeName = ? where employeeId = ?", employee.getEmployeeName(), employeeId);
-            }
-
-            if (employee.getEmail() != null) {
-                db.update("update employeelist set email = ? where employeeId = ?", employee.getEmail(), employeeId);
-            }
-
-            if (employee.getDepartment() != null) {
-                db.update("update employeelist set department = ? where employeeId = ?", employee.getDepartment(), employeeId);
-            }
-            return getEmployeeById(employeeId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (employee.getEmployeeName() != null) {
+            db.update("update employeelist set employeeName = ? where employeeId = ?", employee.getEmployeeName(), employeeId);
         }
-        
+
+        if (employee.getEmail() != null) {
+            db.update("update employeelist set email = ? where employeeId = ?", employee.getEmail(), employeeId);
+        }
+
+        if (employee.getDepartment() != null) {
+            db.update("update employeelist set department = ? where employeeId = ?", employee.getDepartment(), employeeId);
+        }
+        return getEmployeeById(employeeId);
     }
 
     @Override
